@@ -5,6 +5,7 @@ let loginform = document.querySelector('.login-form-container');
 let formclose = document.querySelector('#form-close');
 let menu = document.querySelector('#menu');
 let navbar = document.querySelector('.navbar');
+let videobtn = document.querySelectorAll('.vid-btn');
 
 window.onscroll = () =>{
     searchbtn.classList.remove('fa-times');
@@ -30,3 +31,12 @@ formbtn.addEventListener('click', () => {
 formclose.addEventListener('click', () => {
     loginform.classList.remove('active');
 });
+
+videobtn.forEach(btn =>{
+    btn.addEventListener('click',()=>{
+        document.querySelector('.controls .active').classList.remove('active');
+        btn.classList.add('active');
+        let src = btn.getAttribute('datasrc');
+        document.querySelector('#video-silder').src =src;
+    })
+})
