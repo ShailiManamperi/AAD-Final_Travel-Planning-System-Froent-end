@@ -40,3 +40,23 @@ videobtn.forEach(btn =>{
         document.querySelector('#video-silder').src =src;
     })
 })
+
+var swiper = new Swiper(".review-slider", {
+    spacebetween:20,
+    loop:true,
+    autoplay:{
+        delay:2500,
+        disableOnInteraction:false,
+    },
+    // breakpoints:{
+    //     640:{
+    //         sildesPerview:1,
+    //     },
+    //     790:{
+    //         sildesPerview: 2,
+    //     },
+    //     1020:{
+    //         sildesPerview:3,
+    //     },
+    // }
+});
