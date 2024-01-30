@@ -151,6 +151,14 @@
 .login .input-div.pass{
     margin-bottom: 4px;
 }
+.login p{
+    display: block;
+    text-align: left;
+    color: #999;
+}
+.login #register{
+    color: #999;
+}
 
 .login a{
     display: block;
