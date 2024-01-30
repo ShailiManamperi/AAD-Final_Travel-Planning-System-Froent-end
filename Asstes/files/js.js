@@ -60,3 +60,13 @@ var swiper = new Swiper(".review-slider", {
     //     },
     // }
 });
+
+//====================toggale icon navbar ===============//
+
+let menuicon = document.querySelector('#menu-icon');
+let navbr = document.querySelector('.navbar');
+
+menuicon.onclick = () => {
+    menuicon.classList.toggle('bx-x');
+    navbr.classList.toggle('active');
+}

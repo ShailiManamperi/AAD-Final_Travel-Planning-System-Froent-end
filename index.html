@@ -2,10 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Travel Management System</title>
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!--RTL version-->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
 
     <!--font awosome cdn link-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -50,7 +72,7 @@
         <h3>Login</h3>
         <input type="email" class="box" placeholder="enter your email" id="loginemail">
         <input type="password" class="box" placeholder="enter your password" id="loginpassword">
-        <input type="submit" value="login now" class="btn" id="login">
+        <input type="submit" value="login now" class="btn" id="btnlogin">
         <input type="checkbox"id="remember">
         <label for="remember">remember me</label>
         <p>forget password? <a href="#">click here</a> </p>
@@ -554,13 +576,177 @@
 
 <!--Footer section end-->
 <script src="/Asstes/jquery-3.6.4.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+<script>
+    $('.file-input').change(function () {
+        var curElement = $(this).parent().parent().find('.image');
+        console.log(curElement);
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            curElement.attr('src', e.target.result);
+        };
+
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    $('.user-nic-img').each(function () {
+        var $img = $(this).find('img');
+        var $input = $(this).find('input');
+
+        $input.on('change', function () {
+            var file = this.files[0];
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $img.attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    $(".custom-input").each(function (){
+        let o = this;
+        $(o).on('change', function (){
+            let file = this.files[0];
+            if (file){
+                let reader = new FileReader();
+                reader.onload = function (e){
+                    $(o).parent().find('img').attr('src', e.target.result);
+
+                }
+                reader.readAsDataURL(file);
+            }
+        }) ;
+    });
+
+    const FIELDS = {
+        NAME: 'name',
+        EMAIL: 'email',
+        PASSWORD: 'password',
+        ADDRESS: 'address',
+        CONTACT: 'contact'
+    }
+
+    // Regular Expressions
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const phoneRegex = /^\d{10}$/;
+    const nameRegex = /^[a-zA-Z\s']+$/;
+
+    const isValidField = (data, type) => {
+        switch (type) {
+            case FIELDS.EMAIL:
+                return emailRegex.test(data);
+            case FIELDS.PASSWORD:
+                return passwordRegex.test(data);
+            case FIELDS.CONTACT:
+                return phoneRegex.test(data);
+            case FIELDS.NAME:
+                return nameRegex.test(data);
+            default:
+                return data.trim() !== '';
+        }
+    };
+
+    function InvalidMsg(textbox, type) {
+        if (textbox.value === '') {
+            switch (type) {
+                case FIELDS.EMAIL:
+                    textbox.setCustomValidity('Required email address');
+                    break;
+                case FIELDS.PASSWORD:
+                    textbox.setCustomValidity('Required password');
+                    break;
+                case FIELDS.NAME:
+                    textbox.setCustomValidity('Required name');
+                    break;
+                case FIELDS.ADDRESS:
+                    textbox.setCustomValidity('Required address');
+                    break;
+                case FIELDS.CONTACT:
+                    textbox.setCustomValidity('Required contact number');
+                    break;
+            }
+        } else {
+            switch (type) {
+                case FIELDS.EMAIL:
+                    let flag = isValidField(textbox.value, FIELDS.EMAIL);
+                    if (!flag) {
+                        textbox.setCustomValidity('Invalid email address');
+                        $(textbox).parent().find('label').css('color', 'red');
+                    } else {
+                        textbox.setCustomValidity('');
+                        $(textbox).parent().find('label').removeAttr('style');
+                    }
+                    break;
+                case FIELDS.PASSWORD:
+                    let flagPassword = isValidField(textbox.value, FIELDS.PASSWORD);
+                    if (!flagPassword) {
+                        textbox.setCustomValidity('Password must be at least 8 characters and contain at least one letter and one number');
+                        $(textbox).parent().find('label').css('color', 'red');
+                    } else {
+                        textbox.setCustomValidity('');
+                        $(textbox).parent().find('label').removeAttr('style');
+                    }
+                    break;
+                case FIELDS.NAME:
+                    let flagName = isValidField(textbox.value, FIELDS.NAME);
+                    if (!flagName) {
+                        textbox.setCustomValidity('Invalid name');
+                        $(textbox).parent().find('label').css('color', 'red');
+                    } else {
+                        textbox.setCustomValidity('');
+                        $(textbox).parent().find('label').removeAttr('style');
+                    }
+                    break;
+                case FIELDS.CONTACT:
+                    let flagContact = isValidField(textbox.value, FIELDS.CONTACT);
+                    if (!flagContact) {
+                        textbox.setCustomValidity('Invalid contact number');
+                        $(textbox).parent().find('label').css('color', 'red');
+                    } else {
+                        textbox.setCustomValidity('');
+                        $(textbox).parent().find('label').removeAttr('style');
+                    }
+                    break;
+                default:
+                    textbox.setCustomValidity('');
+                    $(textbox).parent().find('label').removeAttr('style');
+                    break;
+            }
+        }
+    }
+
+
+
+
+
+    /*function getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL.replace(/^data:image\/?[A-z]*;base64,/);
+    }
+    var base64 = getBase64Image(document.getElementById("imageid"));*/
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <!--custom js link-->
 <script src="/Asstes/files/js.js"></script>
-<script type="module" src="/Asstes/files/controller/UserserviceController.js"></script>
-<script type="module" src="/Asstes/files/controller/travelserciveController.js"></script>
-<script type="module" src="/Asstes/files/controller/GuideserviceController.js"></script>
-<script type="module" src="/Asstes/files/controller/vehicleserviceCOntroller.js"></script>
-<script type="module" src="/Asstes/files/controller/HotelserviceController.js"></script>
+<script src="/Asstes/script/conroller/loginController.js" type="module"></script>
+<!--<script src="/Asstes/script/token/tokenController.js" type="module"></script>-->
 </body>
 </html>
